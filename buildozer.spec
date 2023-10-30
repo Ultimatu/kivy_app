@@ -100,15 +100,7 @@ fullscreen = 0
 READ_EXTERNAL_STORAGE
 WRITE_EXTERNAL_STORAGE
 ACCESS_LOCATION_EXTRA_COMMANDS
-ACCESS_NETWORK_STATE
-ACCESS_WIFI_STATE
 CAMERA 
-CAMERA_FLASH
-CHANGE_WIFI_STATE
-INTERNET
-RECORD_AUDIO
-WAKE_LOCK
-VIBRATE
 
 
 # (list) features (adds uses-feature -tags to manifest)
@@ -284,7 +276,7 @@ VIBRATE
 #android.uses_library =
 
 # (str) Android logcat filters to use
-#android.logcat_filters = *:S python:D
+android.logcat_filters = *:S python:D
 
 # (bool) Android logcat only display log for activity's pid
 #android.logcat_pid_only = False
