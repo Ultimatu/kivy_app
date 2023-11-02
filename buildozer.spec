@@ -13,7 +13,7 @@ package.domain = com.facedetector
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,jpeg,kv,atlas
+source.include_exts = py,png,jpg,jpeg,kv,atlas,xml
 
 # (list) List of inclusions using pattern matching
 source.include_patterns = assets/*,images/*.png,images/*.jpeg
@@ -37,7 +37,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,pillow
+requirements = python3,kivy,pillow,opencv,cmake,dlib,face_recognition
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -67,7 +67,7 @@ orientation = portrait
 osx.python_version = 3
 
 # Kivy version to use
-osx.kivy_version = 1.9.1
+osx.kivy_version = 2.2.1
 
 #
 # Android specific
@@ -100,15 +100,8 @@ fullscreen = 0
 READ_EXTERNAL_STORAGE
 WRITE_EXTERNAL_STORAGE
 ACCESS_LOCATION_EXTRA_COMMANDS
-ACCESS_NETWORK_STATE
-ACCESS_WIFI_STATE
 CAMERA 
-CAMERA_FLASH
-CHANGE_WIFI_STATE
-INTERNET
-RECORD_AUDIO
-WAKE_LOCK
-VIBRATE
+ACCESS_FINE_LOCATION
 
 
 # (list) features (adds uses-feature -tags to manifest)
@@ -127,7 +120,7 @@ VIBRATE
 #android.ndk = 23b
 
 # (int) Android NDK API to use. This is the minimum API your app will support, it should usually match android.minapi.
-#android.ndk_api = 21
+android.ndk_api = 24
 
 # (bool) Use --private data storage (True) or --dir public storage (False)
 #android.private_storage = True

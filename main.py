@@ -1,30 +1,103 @@
+'''
+kivyFaceRecognition Example (Based on Kivys "Camera Example")
+====================================================
+
+This example demonstrates a simple use of the camera with face detection.
+It shows a window with buttons "Play", "Face detection" and "Capture".
+Note that not finding a camera, perhaps because gstreamer is not installed,
+will throw an exception during the kv language processing.
+'''
+
+import time
+import os
+from kivy.animation import Animation
 from kivy.app import App
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.button import Button
-from kivy.uix.camera import Camera
-from kivy.uix.image import Image
-from kivy.uix.label import Label
-from kivy.core.window import Window
+from kivy.lang import Builder
+from kivy.uix.floatlayout import FloatLayout
+from kivy.properties import ObjectProperty
 
-class SelfieApp(App):
-    def build(self):
-        self.camera = Camera(resolution=(640, 480), play=True)
-        self.camera.keep_ratio = False
-        layout = BoxLayout(orientation='vertical')
-        layout.add_widget(self.camera)
+from facecamera import FaceCamera
 
-        self.label = Label(text="Prenez un selfie!")
-        self.button = Button(text="Prendre une photo")
-        self.button.bind(on_press=self.take_picture)
-        layout.add_widget(self.label)
-        layout.add_widget(self.button)
+
+Builder.load_string('''
+
+<CameraClick>:
+    face_camera: camera
+    orientation: 'vertical'
+
+    FaceCamera:
+        id: camera
+        size_hint_y: None
+        pos: self.x, dp(48)
+        height: root.height - dp(48)
+        allow_stretch: True
+        keep_ratio: False
+        resolution: (1280, 720)
+        play: True
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: None
+        height: '48dp'
+
+        ToggleButton:
+            text: 'Pause'
+            state: 'down'
+            on_press:
+                camera.play = not camera.play
+                self.text = 'Pause' if self.text == 'Play' else 'Play'
+
+        ToggleButton:
+            text: 'Face detection'
+            state: 'down'
+            on_press:
+                camera.enable_face_detection = not camera.enable_face_detection
+
+        Button:
+            text: 'Capture'
+            on_press: root.capture()
+''')
+
+
+class CameraClick(FloatLayout):
+
+    face_camera = ObjectProperty()
+    '''
+    Reference to camera instance.
+    '''
+
+    def on_face_camera(self, ins, camera):
+        # Crée une liste des noms de fichiers dans le dossier "know_faces"
+        image_folder = "./assets/know_faces"
+        image_files = [f for f in os.listdir(image_folder) if os.path.isfile(os.path.join(image_folder, f))]
+
+        # Enregistre chaque personne avec son image correspondante
+        for image_file in image_files:
+           name = image_file.split("_")[0]  # Coupe le nom au niveau du caractère "_"
+           image_path = os.path.join(image_folder, image_file)
+        camera.register_person("Tonde", "./assets/know_faces/Test.png")
         
-        return layout
 
-    def take_picture(self, instance):
-        self.label.text = "Traitement de la photo..."
-        self.camera.export_to_png("selfie.png")
-        self.label.text = "Selfie sauvegardé sous selfie.png"
 
-if __name__ == '__main__':
-    SelfieApp().run()
+    def capture(self):
+        """
+        Capture an image and save it by using the current timestamp as name.
+        """
+        # show camera shutter flash
+        Animation.cancel_all(self.face_camera)
+        anim = Animation(opacity=0.0, duration=0.125)
+        anim += Animation(opacity=1.0, duration=0.125)
+        anim.start(self.face_camera)
+
+        # capture picture from texture
+        timestr = time.strftime("%Y%m%d_%H%M%S")
+        self.face_camera.capture_image("IMG_{}.png".format(timestr))
+
+
+class TestCamera(App):
+
+    def build(self):
+        return CameraClick()
+
+
+TestCamera().run()
