@@ -1,12 +1,12 @@
-import cv2
 import requests
-import numpy as np
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
 from kivy.uix.button import Button
 from kivy.clock import Clock
 from kivy.graphics.texture import Texture
+import cv2
+
 
 from kivy.uix.gridlayout import GridLayout
 
