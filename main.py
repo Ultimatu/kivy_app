@@ -38,12 +38,14 @@ class CameraApp(App):
         return layout
 
     def start_camera(self, instance):
+        print("starting camera ...")
         self.capture = cv2.VideoCapture(0)
         self.start_button.disabled = True
         self.stop_button.disabled = False
         self.process_current_frame = True
 
     def stop_camera(self, instance):
+        print("stoping camera ...")
         if self.capture:
             self.capture.release()
             self.start_button.disabled = False
