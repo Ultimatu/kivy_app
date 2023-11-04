@@ -1,0 +1,16 @@
+BoxLayout:
+    orientation: 'vertical'
+
+    Image:
+        id: camera
+
+    Button:
+        text: 'Start'
+        on_press: app.start_camera(self)
+
+    Button:
+        text: 'Stop'
+        disabled: True
+        on_press: app.stop_camera(self)
+
+    
