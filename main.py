@@ -39,7 +39,8 @@ class CameraApp(App):
 
     def start_camera(self, instance):
         print("starting camera ...")
-        self.capture = cv2.VideoCapture(0)
+        #try self.capture = cv2.VideoCapture(0) or self.capture = cv2.VideoCapture(-1) or self.capture = cv2.VideoCapture(1) #for phone camera
+        self.capture = cv2.VideoCapture(-1)
         self.start_button.disabled = True
         self.stop_button.disabled = False
         self.process_current_frame = True
